@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan & Billing - SnapApp™</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: white;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            padding-top: 20px !important;
+        }
+
+        /* Header Styles */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1976d2;
+            margin: 0;
+        }
+
+
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Info Card */
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            border: 2px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 8px 24px rgba(25, 118, 210, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Trial Badge Styles */
+        .trial-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: #FFF9EB;
+            border: 1px solid #FFE5B4;
+            border-radius: 12px;
+            color: #FF8800;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 4px rgba(255, 136, 0, 0.05);
+        }
+
+        .trial-badge .material-icons {
+            font-size: 20px;
+            color: #FF8800;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 28px;
+        }
+
+        /* Detail Items */
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .detail-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 0.95rem;
+            color: #5f6368;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .plan-name-value {
+            color: #1976d2;
+            font-weight: 700;
+        }
+
+        .price-value {
+            color: #1976d2;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .action-btn .material-icons {
+            font-size: 20px;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.3);
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #1976d2;
+            border: 2px solid #1976d2;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(25, 118, 210, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
+        }
+
+        /* Usage Tabs */
+        .usage-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        button:focus {
+            outline: none !important;
+        }
+
+        .usage-tab {
+            padding: 10px 20px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 20px;
+            color: #5f6368;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .usage-tab:hover {
+            background: #e5e7eb;
+        }
+
+        .usage-tab.active {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Usage Content */
+        .usage-content {
+            display: none;
+        }
+
+        .usage-content.active {
+            display: block;
+            background-color: transparent !important;
+        }
+
+        .usage-item {
+            margin-bottom: 24px;
+        }
+
+        .usage-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .usage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .usage-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .usage-value {
+            font-size: 0.875rem;
+            color: #5f6368;
+            font-weight: 500;
+        }
+
+        .usage-note {
+            font-size: 0.8rem;
+            color: #9e9e9e;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1976d2 0%, #1565c0 100%);
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 12px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+
+
+            .card-header {
+                padding: 20px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .action-btn {
+                font-size: 0.9rem;
+                padding: 12px 20px;
+            }
+
+            .usage-tab {
+                font-size: 0.85rem;
+                padding: 8px 16px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px !important;
+            padding: 0px !important;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #5f6368;
+        }
+
+        .breadcrumb a {
+            color: #1976d2;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            color: #1565c0;
+        }
+
+        .breadcrumb .separator {
+            color: #9e9e9e;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb .current {
+            color: #5f6368;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Container -->
+    <div class="main-container d-none">
+        <!-- Header -->
+        <div class="page-header">
+            <nav class="breadcrumb">
+                <a href="/page/account-settings/[[id]]">My Account</a>
+                <span class="separator">
+                    <i class="material-icons" style="font-size: 16px;">chevron_right</i>
+                </span>
+                <span class="current">Plan Details</span>
+            </nav>
+            <h1 class="page-title">Plan & Billing</h1>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Plan Details Card -->
+            <div class="info-card">
+                <div class="card-header">
+                    <h2 class="card-title">Plan Details</h2>
+                    <div id="trial-badge-container" style="display: none;">
+                        <div class="trial-badge">
+                            <i class="material-icons">timer</i>
+                            <span id="days-left-text"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="detail-item">
+                        <span class="detail-label">Plan</span>
+                        <span class="detail-value plan-name-value"></span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Trial Ends</span>
+                        <span class="detail-value" id="trial-ends-value">[[trial_end_date]]</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Billing Cycle</span>
+                        <span class="detail-value" id="billing-cycle-value">[[billing_cycle]]</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <span class="detail-label">Amount</span>
+                        <span class="detail-value price-value" id="amount-value">$[[price]]</span>
+                    </div>
+                    <input type="hidden" id="tenant-id" value="[[id]]">
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="/page/order-summary/[[id]]" class="action-btn primary-btn" id="upgrade-btn"
+                            style="text-decoration: none;">
+                            <span class="material-icons">workspace_premium</span>
+                            Upgrade Plan
+                        </a>
+                        [[[PAYMENT_HISTORIES_SHOWIF()]]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan Usage Card -->
+            <div class="info-card">
+                <div class="card-header">
+                    <h2 class="card-title">Plan Usage</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Usage Tabs -->
+                    <div class="usage-tabs">
+                        <button class="usage-tab active" data-usage="general">General</button>
+                        <button class="usage-tab" data-usage="messaging">Messaging</button>
+                    </div>
+
+                    <!-- General Usage -->
+                    <div class="usage-content active" id="general-usage">
+                        <div class="usage-item">
+                            <div class="usage-header">
+                                <span class="usage-label">Users</span>
+                                <span class="usage-value" id="users-value">0 of 0 users used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="users-progress"></div>
+                            </div>
+                        </div>
+
+                        <div class="usage-item">
+                            <div class="usage-header">
+                                <span class="usage-label">Objects</span>
+                                <span class="usage-value" id="objects-value">0 of 0 objects used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="objects-progress"></div>
+                            </div>
+                        </div>
+
+                        <div class="usage-item">
+                            <div class="usage-header">
+                                <span class="usage-label">Records</span>
+                                <span class="usage-value" id="records-value">0 of 0 records used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="records-progress"></div>
+                            </div>
+                        </div>
+
+                        <div class="usage-item">
+                            <div class="usage-header">
+                                <span class="usage-label">Storage</span>
+                                <span class="usage-value" id="storage-value">0 of 0 GB used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="storage-progress"></div>
+                            </div>
+                        </div>
+
+                        <div class="usage-item" id="api-calls-item">
+                            <div class="usage-header">
+                                <span class="usage-label">API Calls</span>
+                                <span class="usage-value" id="api-calls-value">0 of 0 used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="api-calls-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messaging Usage -->
+                    <div class="usage-content" id="messaging-usage">
+                        <div class="usage-item">
+                            <div class="usage-header">
+                                <span class="usage-label">Emails</span>
+                                <span class="usage-value" id="emails-value">0 of 0 used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="emails-progress"></div>
+                            </div>
+                        </div>
+                        <div class="usage-item">
+                            <div class="usage-header">
+                                <span class="usage-label">SMS</span>
+                                <span class="usage-value" id="sms-value">0 of 0 used</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="sms-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Show a loader overlay
+        function showLoader() {
+            const style = document.createElement("style");
+            style.id = "keystone-loader-style";
+            style.innerHTML = `
+        .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+          z-index: 9999;
+        }
+
+        .overlay.active {
+          opacity: 1;
+          visibility: visible;
+          background-color: rgb(240 246 255 / 59%) !important;
+        }
+
+        .loader-keystone {
+          width: 36px;   /* smaller loader */
+          overflow: visible;
+          transform: rotate(-90deg);
+          transform-origin: center;
+          --active: rgb(37 99 235);
+          --track: rgb(187 217 255);
+          --duration: 8s;
+          animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { rotate: 0deg; }
+          100% { rotate: 360deg; }
+        }
+
+        .loader-keystone .active {
+          stroke: var(--active);
+          stroke-linecap: round;
+          stroke-dashoffset: 360;
+          animation: active-animation var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes active-animation {
+          0% { stroke-dasharray: 0 0 0 360 0 360; }
+          12.5% { stroke-dasharray: 0 0 270 90 270 90; }
+          25% { stroke-dasharray: 0 270 0 360 0 360; }
+          37.5% { stroke-dasharray: 0 270 270 90 270 90; }
+          50% { stroke-dasharray: 0 540 0 360 0 360; }
+          50.001% { stroke-dasharray: 0 180 0 360 0 360; }
+          62.5% { stroke-dasharray: 0 180 270 90 270 90; }
+          75% { stroke-dasharray: 0 450 0 360 0 360; }
+          87.5% { stroke-dasharray: 0 450 270 90 270 90; }
+          87.501% { stroke-dasharray: 0 90 270 90 270 90; }
+          100% { stroke-dasharray: 0 360 1 360 0 360; }
+        }
+
+        .track {
+          stroke: var(--track);
+          stroke-linecap: round;
+          stroke-dashoffset: 360;
+          animation: track-animation var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes track-animation {
+          0% { stroke-dasharray: 0 20 320 40 320 40; }
+          12.5% { stroke-dasharray: 0 290 50 310 50 310; }
+          25% { stroke-dasharray: 0 290 320 40 320 40; }
+          37.5% { stroke-dasharray: 0 560 50 310 50 310; }
+          37.501% { stroke-dasharray: 0 200 50 310 50 310; }
+          50% { stroke-dasharray: 0 200 320 40 320 40; }
+          62.5% { stroke-dasharray: 0 470 50 310 50 310; }
+          62.501% { stroke-dasharray: 0 110 50 310 50 310; }
+          75% { stroke-dasharray: 0 110 320 40 320 40; }
+          87.5% { stroke-dasharray: 0 380 50 310 50 310; }
+          100% { stroke-dasharray: 0 380 320 40 320 40; }
+        }
+        .d-none { display: none !important; }
+      `;
+            document.head.appendChild(style);
+
+            // Create overlay
+            const overlay = document.createElement("div");
+            overlay.id = "keystone-loader-overlay";
+            overlay.className = "overlay active";
+
+            // Create SVG loader
+            overlay.innerHTML = `
+        <svg class="loader-keystone" viewBox="0 0 120 120">
+          <circle class="track" cx="60" cy="60" r="54" fill="none" stroke-width="12"/>
+          <circle class="active" cx="60" cy="60" r="54" fill="none" stroke-width="12"/>
+        </svg>
+      `;
+            document.body.appendChild(overlay);
+
+            // Remove overlay after 3 seconds (fallback)
+            setTimeout(() => {
+                if (document.getElementById("keystone-loader-overlay")) {
+                    hideLoader();
+                }
+            }, 3000);
+        }
+
+        function hideLoader() {
+            const overlay = document.getElementById("keystone-loader-overlay");
+            const style = document.getElementById("keystone-loader-style");
+            if (overlay) overlay.remove();
+            if (style) style.remove();
+        }
+
+        // Usage Tabs Logic
+        const usageTabs = document.querySelectorAll('.usage-tab');
+        const usageContents = document.querySelectorAll('.usage-content');
+
+        usageTabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                const targetUsage = this.getAttribute('data-usage');
+
+                // Remove active class from all tabs and contents
+                usageTabs.forEach(t => t.classList.remove('active'));
+                usageContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                const targetContent = document.getElementById(targetUsage + '-usage');
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+
+
+
+
+        // Change Payment Method Button - Removed as per requirements
+        /*
+        const paymentMethodBtn = document.getElementById('payment-method-btn');
+        ...
+        */
+
+        // Inject Badge Styles via JS
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `
+      .cycle-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.87rem;
+        font-weight: 600;
+        line-height: 1;
+      }
+      .badge-monthly {
+        background-color: #d0fae5;
+        color: #006145;
+      }
+      .badge-yearly {
+        background-color: #f3e8ff;
+        color: #6d11b0;
+      }
+    `;
+        document.head.appendChild(styleSheet);
+
+        function formatNumber(num) {
+            if (num === null || num === undefined) return '0';
+            return num.toLocaleString();
+        }
+
+        function formatStorage(bytes) {
+            if (!bytes) return '0 GB';
+            // Assuming decimal GB for the 2,000,000,000 max_storage example
+            const gb = bytes / 1000000000;
+            if (gb < 0.1 && gb > 0) return gb.toFixed(2) + ' GB';
+            return Math.round(gb) + ' GB';
+        }
+
+        // Function to update progress bars based on usage
+        function updateProgressBars(data) {
+            const metrics = [
+                { id: 'users', used: data.users, max: data.max_users },
+                { id: 'objects', used: data.objects, max: data.max_objects },
+                { id: 'records', used: data.records, max: data.max_records },
+                { id: 'storage', used: data.storage, max: data.max_storage },
+                { id: 'api-calls', used: data.workflow_execution, max: data.max_workflow_execution },
+                { id: 'emails', used: data.emails, max: data.max_emails },
+                { id: 'sms', used: data.sms, max: data.max_sms }
+            ];
+
+            metrics.forEach(metric => {
+                const progressFill = document.getElementById(`${metric.id}-progress`);
+                const valueDisplay = document.getElementById(`${metric.id}-value`);
+
+                if (valueDisplay) {
+                    if (metric.id === 'storage') {
+                        valueDisplay.textContent = `${formatStorage(metric.used)} of ${formatStorage(metric.max)} used`;
+                    } else if (metric.id === 'users' || metric.id === 'objects' || metric.id === 'records') {
+                        valueDisplay.textContent = `${formatNumber(metric.used)} of ${formatNumber(metric.max)} ${metric.id} used`;
+                    } else {
+                        valueDisplay.textContent = `${formatNumber(metric.used)} of ${formatNumber(metric.max)} used`;
+                    }
+                }
+
+                if (progressFill) {
+                    const percentage = metric.max > 0 ? (metric.used / metric.max) * 100 : 0;
+                    progressFill.style.width = Math.min(percentage, 100) + '%';
+                }
+            });
+        }
+
+        // Fetch plan details and usage data
+        async function fetchPlanDetails() {
+            const tenantInput = document.getElementById('tenant-id');
+            const tenantId = tenantInput ? tenantInput.value : null;
+
+            try {
+                const response = await csrfFetch("/preview-expression", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        expression_field: "invalid_error",
+                        field_id: "ebcaad3d-eef3-42ed-84e6-91adf8a95f3c",
+                        headers: {},
+                        fields: {
+                            id: tenantId,
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch plan details');
+                }
+
+                const responseData = await response.json();
+                console.log('Raw response:', responseData);
+
+                // Parse the nested JSON structure
+                // The API returns data in format: {"result": "{\"status\":\"success\",...}"}
+                let data;
+                if (responseData.result) {
+                    // If result is a string, parse it
+                    if (typeof responseData.result === 'string') {
+                        data = JSON.parse(responseData.result);
+                    } else {
+                        data = responseData.result;
+                    }
+                } else {
+                    data = responseData;
+                }
+
+                console.log('Parsed plan details:', data);
+
+                // Update plan details
+                const planNameElement = document.querySelector('.plan-name-value');
+                if (planNameElement && data.name) {
+                    planNameElement.textContent = data.name;
+                    console.log('Updated plan name:', data.name);
+                }
+
+                // Update Trial Badge
+                const trialBadgeContainer = document.getElementById('trial-badge-container');
+                const daysLeftText = document.getElementById('days-left-text');
+                const trialBadgeIcon = trialBadgeContainer ? trialBadgeContainer.querySelector('.material-icons') : null;
+
+                if (trialBadgeContainer && daysLeftText && data.days_left_in_trial !== undefined && data.days_left_in_trial !== null && data.days_left_in_trial !== "") {
+                    const daysLeft = parseInt(data.days_left_in_trial);
+                    if (daysLeft > 0) {
+                        daysLeftText.textContent = `${daysLeft} Days Left in Trial`;
+                        if (trialBadgeIcon) trialBadgeIcon.textContent = 'timer';
+                        trialBadgeContainer.style.display = 'block';
+                    } else if (daysLeft === 0) {
+                        daysLeftText.textContent = `Your free trial has expired`;
+                        if (trialBadgeIcon) trialBadgeIcon.textContent = 'warning';
+                        trialBadgeContainer.style.display = 'block';
+                    } else {
+                        trialBadgeContainer.style.display = 'none';
+                    }
+                } else if (trialBadgeContainer) {
+                    trialBadgeContainer.style.display = 'none';
+                }
+
+                const trialEndsElement = document.getElementById('trial-ends-value');
+                const billingCycleElement = document.getElementById('billing-cycle-value');
+                const priceElement = document.getElementById('amount-value');
+
+                // Update Trial Ends
+                if (trialEndsElement) {
+                    trialEndsElement.textContent = (data.free_trial === 1) ? (data.trial_ends || '--') : '--';
+                }
+
+                // Update Billing Cycle
+                if (billingCycleElement) {
+                    if (data.free_trial === 1) {
+                        billingCycleElement.innerHTML = '--';
+                    } else if (data.billing_cycle) {
+                        const badgeClass = data.billing_cycle === 'Yearly' ? 'badge-yearly' : 'badge-monthly';
+                        billingCycleElement.innerHTML = `
+              <div class="cycle-badge ${badgeClass}">
+                ${data.billing_cycle}
+              </div>
+            `;
+                    } else {
+                        billingCycleElement.innerHTML = '--';
+                    }
+                }
+
+                // Update Amount
+                if (priceElement) {
+                    if (data.name === "Professional" && data.free_trial === null) {
+                        priceElement.textContent = data.latest_payment_amount ? '$' + data.latest_payment_amount : '--';
+                    } else {
+                        priceElement.textContent = '--';
+                    }
+                }
+                console.log('Updated plan details with Professional and null trial amount logic');
+
+                // Check if data is valid
+                if (!data) {
+                    console.error('No data returned from plan details fetch');
+                    return;
+                }
+
+                // Update progress bars with actual usage data
+                // updateProgressBars(data.usage_totals); // Removed old usage logic
+
+                // Fetch usage data separately from the new endpoint
+                fetchUsageData();
+
+            } catch (error) {
+                console.error('Error fetching plan details:', error);
+            }
+        }
+
+        // Fetch plan details and usage data separately
+        async function fetchUsageData() {
+            try {
+                const response = await csrfFetch("/preview-expression", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        expression_field: "invalid_error",
+                        field_id: "401ce1c1-321b-454a-81fd-1b20d24a874f",
+                        fields: {}
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch usage statistics');
+                }
+
+                const responseData = await response.json();
+                let data;
+                if (responseData.result) {
+                    data = typeof responseData.result === 'string' ? JSON.parse(responseData.result) : responseData.result;
+                } else {
+                    data = responseData;
+                }
+
+                console.log('Usage stats data:', data);
+                updateProgressBars(data);
+
+            } catch (error) {
+                console.error('Error fetching usage stats:', error);
+            }
+        }
+
+        // Initialize - fetch data when page loads
+        async function initPage() {
+            showLoader();
+            const mainContainer = document.querySelector('.main-container');
+            if (mainContainer) mainContainer.classList.add('d-none');
+
+            const tenantInput = document.getElementById('tenant-id');
+            const tenantIdValue = tenantInput ? tenantInput.value : null;
+
+            // Check if tenant ID is valid (not null and not the placeholder [[id]])
+            if (tenantIdValue && tenantIdValue !== '[[id]]' && tenantIdValue !== '') {
+                console.log("Valid tenant ID found:", tenantIdValue);
+                if (mainContainer) mainContainer.classList.remove('d-none');
+                hideLoader();
+                fetchPlanDetails();
+            } else {
+                console.log("Tenant ID is null or placeholder, fetching from preview expression...");
+                try {
+                    const response = await csrfFetch("/preview-expression", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            expression_field: "invalid_error",
+                            field_id: "644205d9-d4d0-4fd4-8604-81a1c0d89cce",
+                            fields: {}
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('Failed to fetch tenant ID');
+
+                    const responseData = await response.json();
+                    const fetchedId = responseData.result;
+
+                    if (fetchedId) {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const appId = urlParams.get('app');
+                        const newUrl = `https://snapapp.com/page/plan-details/${fetchedId}${appId ? '?app=' + appId : ''}`;
+                        console.log("Redirecting to:", newUrl);
+                        window.location.href = newUrl;
+                    } else {
+                        console.error("No tenant ID returned from expression");
+                        if (mainContainer) mainContainer.classList.remove('d-none');
+                        hideLoader();
+                    }
+                } catch (error) {
+                    console.error("Error in initPage:", error);
+                    if (mainContainer) mainContainer.classList.remove('d-none');
+                    hideLoader();
+                }
+            }
+        }
+
+        // Start initialization
+        initPage();
+    </script>
+
+</body>
+
+</html>
