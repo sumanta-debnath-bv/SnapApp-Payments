@@ -1,0 +1,1247 @@
+<body id="i2wh">
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>SnapApp™ Pricing
+  </title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <input id="tenant-id-input" type="hidden" value="[[id]]"/>
+  <!-- Page Loader -->
+  <div id="page-loader">
+    <div class="page-loader-overlay">
+      <div class="page-loader-spinner">
+        <svg viewBox="25 25 50 50" class="page-circular">
+          <circle cx="50" cy="50" fill="none" r="20" stroke-miterlimit="10" stroke-width="3" class="page-path">
+          </circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <!-- Header Section -->
+  <div class="pricing-header">
+    <h1 class="pricing-title">SnapApp™ Plans &amp; Pricing
+    </h1>
+    <p class="pricing-subtitle">Find a plan that suits your needs.
+    </p>
+    <!-- Billing Toggle -->
+    <div class="billing-toggle-container">
+      <span id="monthlyLabel" class="billing-label">Monthly</span>
+      <label class="toggle-switch"><input id="billingToggle" type="checkbox"/><span class="toggle-slider"></span></label>
+      <span id="yearlyLabel" class="billing-label active">Yearly</span>
+      <span class="discount-badge">[[annual_discount]]</span>
+    </div>
+  </div>
+  <!-- Pricing Cards -->
+  <div class="pricing-container">
+    <!-- Professional Plan -->
+    <div id="professional-card" class="pricing-card">
+      <!-- Promo Banner for Professional -->
+      <div class="card-promo-banner">
+        <h2 class="card-promo-text">[[promo_text]]
+        </h2>
+      </div>
+      <div class="card-header">
+        <h2 class="plan-name">[[plan_name]]
+        </h2>
+        <p class="plan-description">[[plan_description]]
+        </p>
+      </div>
+      <div class="pricing-section">
+        <div class="price-display">
+          <span data-monthly="[[monthly_price]]" data-yearly="[[yearly_price]]" class="price-amount">$[[yearly_price]]</span>
+          <span class="price-period">/ User / Month*</span>
+        </div>
+        <p class="billing-note">Billed annually
+        </p>
+        <div class="price-display secondary">
+          <span data-monthly="[[monthly_user_price]]" data-yearly="[[yearly_user_price]]" class="price-amount">$[[yearly_user_price]]</span>
+          <span class="price-period">/ User / Month*</span>
+        </div>
+      </div>
+      <div class="button-group">
+        <a href="https://snapapp.com/page/snapapp-registration?app=d2f43416-bfe5-49b8-a679-25f6e3d2710a" id="start-free-trial-btn" class="btn-secondary">Start Free Trial</a>
+      </div>
+      <div class="features-section">
+        <h3 class="features-title">Key Features:
+        </h3>
+        <ul id="professional-features" class="features-list">
+          <!-- Features will be populated dynamically -->
+        </ul>
+      </div>
+      <div class="pricing-footnote">*Minimum of 5 users
+      </div>
+    </div>
+    <!-- Corporate Plan -->
+    <div id="corporate-card" class="pricing-card">
+      <!-- Promo Banner for Corporate -->
+      <div class="card-promo-banner">
+        <h2 class="card-promo-text">[[promo_text]]
+        </h2>
+      </div>
+      <div class="card-header">
+        <h2 class="plan-name">[[plan_name]]
+        </h2>
+        <p class="plan-description">[[plan_description]]
+        </p>
+      </div>
+      <div class="pricing-section">
+        <div class="price-display">
+          <span data-monthly="[[monthly_price]]" data-yearly="[[yearly_price]]" class="price-amount">$[[yearly_price]]</span>
+          <span class="price-period">/ User / Month*</span>
+        </div>
+        <p class="billing-note">Billed annually
+        </p>
+      </div>
+      <div class="button-group">
+        <a href="/page/account-settings/[[id]]" id="corporate-free-trial-btn" class="btn-secondary">Coming Soon</a>
+      </div>
+      <div class="features-section">
+        <h3 class="features-title">Key Features:
+        </h3>
+        <ul id="corporate-features" class="features-list">
+          <!-- Features will be populated dynamically -->
+        </ul>
+      </div>
+      <div class="pricing-footnote">*Minimum of 5 users
+      </div>
+    </div>
+    <!-- Enterprise Plan -->
+    <div id="enterprise-card" class="pricing-card">
+      <div class="card-header">
+        <h2 class="plan-name">[[plan_name]]
+        </h2>
+        <p class="plan-description">[[plan_description]]
+        </p>
+      </div>
+      <div class="pricing-section">
+        <div frameborder="0" class="price-display custom">
+          <span class="custom-pricing">Contact for Pricing</span>
+        </div>
+        <p class="billing-note">Volume Discounts &amp; Flexible Payment Options
+        </p>
+      </div>
+      <div class="enterprise-badge-grid">
+        <div class="enterprise-badge">
+          <span class="material-icons">security</span>
+          <span>Advanced IAM</span>
+        </div>
+        <div class="enterprise-badge">
+          <span class="material-icons">history</span>
+          <span>Audit Logs</span>
+        </div>
+        <div class="enterprise-badge">
+          <span class="material-icons">vpn_key</span>
+          <span>SSO/SLAs</span>
+        </div>
+        <div class="enterprise-badge">
+          <span class="material-icons">support_agent</span>
+          <span>24/7 Support</span>
+        </div>
+      </div>
+      <div class="button-group">
+        <a href="/create/cases" id="idmp52" class="btn-primary">Contact Us</a>
+      </div>
+      <div class="features-section">
+        <h3 class="features-title">Key Features:
+        </h3>
+        <ul id="enterprise-features" class="features-list">
+          <!-- Features will be populated dynamically -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Global state for user count
+    window.currentUserCount = 5;
+    // Page Loader functionality
+    window.addEventListener('load', function() {
+      const pageLoader = document.getElementById('page-loader');
+      if (pageLoader) {
+        // Add fade-out class
+        pageLoader.classList.add('fade-out');
+        // Remove from DOM after animation completes
+        setTimeout(() => {
+          pageLoader.style.display = 'none';
+        }
+                   , 500);
+      }
+    }
+                           );
+    // Show loader on page refresh/reload
+    window.addEventListener('beforeunload', function() {
+      const pageLoader = document.getElementById('page-loader');
+      if (pageLoader) {
+        pageLoader.style.display = 'flex';
+        pageLoader.classList.remove('fade-out');
+      }
+    }
+                           );
+    // Inject CSS styles
+    const style = document.createElement('style');
+    style.textContent = `
+.card-promo-banner {
+background: linear-gradient(135deg, rgb(25, 118, 210) 0%, rgb(21, 101, 192) 100%);
+padding: 16px 20px;
+text-align: center;
+margin: -32px -32px 24px -32px;
+border-top-left-radius: 14px;
+border-top-right-radius: 14px;
+min-height: 72px;
+display: none;
+align-items: center;
+justify-content: center;
+}
+.card-promo-text {
+color: white;
+font-size: 1.1rem;
+font-weight: 700;
+margin: 0;
+letter-spacing: 0.5px;
+line-height: 1.3;
+text-transform: uppercase;
+}
+@media (max-width: 768px) {
+.card-promo-banner {
+margin: -32px -32px 20px -32px;
+padding: 14px 16px;
+}
+.card-promo-text {
+font-size: 0.95rem;
+}
+}
+.btn-modal-secondary:hover { background: #F8F9FA; }
+`;
+    document.head.appendChild(style);
+    // Fetch price plans from backend
+    async function fetchPricePlans() {
+      console.log('--- Fetching Price Plans Started ---');
+      try {
+        const response = await csrfFetch('/preview-expression', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+          ,
+          body: JSON.stringify({
+            expression_field: "invalid_error",
+            field_id: "bd2462e8-0d80-482c-9726-3ab51c26cca9",
+            fields: {
+            }
+          }
+                              )
+        }
+                                        );
+        console.log('Price Plans Response Status:', response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Price Plans Raw Response Data:', data);
+        // Parse the nested JSON structure
+        let plans = [];
+        if (data && data.result) {
+          try {
+            const parsedResult = JSON.parse(data.result);
+            console.log('Parsed Price Plans Result:', parsedResult);
+            // Extract plans
+            if (parsedResult && parsedResult.plans && Array.isArray(parsedResult.plans)) {
+              plans = parsedResult.plans;
+            }
+            else if (parsedResult && parsedResult.data && Array.isArray(parsedResult.data)) {
+              plans = parsedResult.data;
+            }
+            else if (Array.isArray(parsedResult)) {
+              plans = parsedResult;
+            }
+            // Extract tenant_id
+            const tenant = parsedResult.tenant || {
+            };
+            window.currentTenantId = tenant.id || tenant.record_id || parsedResult.tenant_id || "";
+            // Find Professional Plan and store its ID for checkout
+            const professionalPlan = plans.find(plan => 
+                                                plan.name === 'Professional' || plan.plan_name === 'Professional'
+                                               );
+            if (professionalPlan) {
+              window.professionalPlanId = professionalPlan.id || professionalPlan.record_id || "";
+            }
+          }
+          catch (e) {
+            console.error('Error parsing price plans result JSON:', e);
+          }
+        }
+        else if (data && Array.isArray(data)) {
+          plans = data;
+        }
+        else if (data && data.plans && Array.isArray(data.plans)) {
+          plans = data.plans;
+        }
+        console.log('Extracted Plans:', plans);
+        console.log('Stored Tenant ID:', window.currentTenantId);
+        console.log('Stored Professional Plan ID:', window.professionalPlanId);
+        if (plans.length > 0) {
+          updatePricingCards(plans);
+        }
+        else {
+          console.warn('No plans found in the response.');
+        }
+      }
+      catch (error) {
+        console.error('--- Fetching Price Plans Failed ---');
+        console.error('Error details:', error);
+      }
+      finally {
+        console.log('--- Fetching Price Plans Completed ---');
+      }
+    }
+    function updatePricingCards(plans) {
+      console.log('Updating pricing cards with:', plans);
+      // Filter for Professional, Corporate and Enterprise plans
+      const professionalPlan = plans.find(plan => 
+                                          plan.name === 'Professional' || plan.plan_name === 'Professional'
+                                         );
+      const corporatePlan = plans.find(plan => 
+                                       plan.name === 'Corporate' || plan.plan_name === 'Corporate'
+                                      );
+      const enterprisePlan = plans.find(plan => 
+                                        plan.name === 'Enterprise' || plan.plan_name === 'Enterprise'
+                                       );
+      // Update annual discount badge
+      const basePlan = professionalPlan || corporatePlan;
+      if (basePlan && basePlan.annual_discount) {
+        const discountBadge = document.querySelector('.discount-badge');
+        if (discountBadge) {
+          const discountPercent = Math.round(basePlan.annual_discount * 100);
+          discountBadge.textContent = `Save ${discountPercent}%`;
+        }
+      }
+      // Update Professional card
+      if (professionalPlan) {
+        window.professionalPlanData = professionalPlan;
+        updateCard('professional', professionalPlan);
+      }
+      // Update Corporate card
+      if (corporatePlan) {
+        window.corporatePlanData = corporatePlan;
+        updateCard('corporate', corporatePlan);
+      }
+      // Update Enterprise card
+      if (enterprisePlan) {
+        updateCard('enterprise', enterprisePlan);
+      }
+    }
+    function updateCard(cardType, planData) {
+      let cardId = 'enterprise-card';
+      if (cardType === 'professional') cardId = 'professional-card';
+      if (cardType === 'corporate') cardId = 'corporate-card';
+      const card = document.getElementById(cardId);
+      if (!card) return;
+      // Apply highlighting via JS if it's the professional card
+      if (cardType === 'professional') {
+        card.style.borderColor = 'rgb(25, 118, 210)';
+      }
+      else {
+        card.style.borderColor = 'rgb(229, 231, 235)';
+      }
+      console.log(`Updating ${cardType} card with:`, planData);
+      // Update promo text if available (Professional and Corporate plans)
+      const promoTextEl = card.querySelector('.card-promo-text');
+      const promoBanner = card.querySelector('.card-promo-banner');
+      const allCards = ['professional-card', 'corporate-card', 'enterprise-card'].map(id => document.getElementById(id));
+      if (promoTextEl && planData.promo_text) {
+        promoTextEl.textContent = planData.promo_text;
+        if (promoBanner) {
+          promoBanner.style.display = 'flex';
+          if (cardType === 'corporate') {
+            promoBanner.style.background = 'rgb(229, 231, 235)';
+            promoTextEl.style.color = 'rgb(75, 85, 99)';
+          }
+          else {
+            promoBanner.style.background = 'linear-gradient(135deg, rgb(25, 118, 210) 0%, rgb(21, 101, 192) 100%)';
+            promoTextEl.style.color = 'white';
+          }
+        }
+      }
+      else {
+        if (promoBanner) promoBanner.style.display = 'none';
+      }
+      // Consistent padding alignment
+      setTimeout(() => {
+        const hasVisiblePromo = !!Array.from(document.querySelectorAll('.card-promo-banner')).find(b => b.style.display === 'flex');
+        const allCards = ['professional-card', 'corporate-card', 'enterprise-card'].map(id => document.getElementById(id));
+        allCards.forEach(c => {
+          if (!c) return;
+          const banner = c.querySelector('.card-promo-banner');
+          if (hasVisiblePromo) {
+            if (banner && banner.style.display === 'flex') {
+              c.style.paddingTop = '32px';
+            }
+            else {
+              c.style.paddingTop = (72 + 24) + 'px';
+              // Banner min-height + margin
+            }
+          }
+          else {
+            c.style.paddingTop = '32px';
+          }
+        }
+                        );
+      }
+                 , 0);
+      // Update plan name
+      const planNameEl = card.querySelector('.plan-name');
+      if (planNameEl) {
+        const name = planData.name || planData.plan_name || (cardType.charAt(0).toUpperCase() + cardType.slice(1));
+        planNameEl.textContent = name;
+      }
+      // Update plan description
+      const planDesc = card.querySelector('.plan-description');
+      if (planDesc) {
+        planDesc.textContent = planData.price_plan_details || planData.description || '';
+      }
+      // Update pricing based on plan type
+      if (cardType === 'professional' || cardType === 'corporate') {
+        const annualDiscount = parseFloat(planData.annual_discount || 0);
+        const term = planData.term || 'Month';
+        // Try to get explicit prices if they exist in response, otherwise derive
+        let monthlyPrice = parseFloat(planData.monthly_price || (term === 'Month' ? planData.price : 0) || 0);
+        let yearlyPricePerMonth = parseFloat(planData.yearly_price || (term === 'Year' ? (planData.price / 12) : 0) || 0);
+        // Fallback derivation if only one price point is provided
+        if (monthlyPrice > 0 && yearlyPricePerMonth === 0) {
+          yearlyPricePerMonth = annualDiscount > 0 ? (monthlyPrice * (1 - annualDiscount)) : monthlyPrice;
+        }
+        else if (yearlyPricePerMonth > 0 && monthlyPrice === 0) {
+          monthlyPrice = annualDiscount > 0 ? (yearlyPricePerMonth / (1 - annualDiscount)) : (yearlyPricePerMonth / 0.8);
+        }
+        const priceAmountEl = card.querySelector('.price-amount');
+        const billingToggle = document.getElementById('billingToggle');
+        const isYearly = billingToggle ? billingToggle.checked : false;
+        // Update price amount
+        if (priceAmountEl) {
+          const mStr = (monthlyPrice || 0).toFixed(2);
+          const yStr = (yearlyPricePerMonth || 0).toFixed(2);
+          priceAmountEl.setAttribute('data-yearly', yStr);
+          priceAmountEl.setAttribute('data-monthly', mStr);
+          priceAmountEl.textContent = isYearly ? `$${yStr}` : `$${mStr}`;
+        }
+        // Hide second price amount (if any)
+        const allPriceDisplays = card.querySelectorAll('.price-display');
+        if (allPriceDisplays[1]) {
+          allPriceDisplays[1].style.display = 'none';
+        }
+        // Show/hide free trial button
+        const freeTrialBtn = card.querySelector('.btn-secondary');
+        if (freeTrialBtn) {
+          if (planData.free_trial === 1 || planData.free_trial === '1' || planData.free_trial === true) {
+            freeTrialBtn.style.display = 'block';
+            // Corporate plan only
+            if (cardType === 'corporate') {
+              freeTrialBtn.href = "javascript:void(0)";
+              freeTrialBtn.onclick = function(e) {
+                if (e) e.preventDefault();
+                return false;
+              };
+            }
+          }
+          else {
+            freeTrialBtn.style.display = 'none';
+          }
+        }
+      }
+      else if (cardType === 'enterprise') {
+        // Enterprise - pricing section handled by HTML
+      }
+      // Update features from HTML string
+      const featuresContainer = document.getElementById(`${cardType}-features`);
+      if (featuresContainer && planData.features) {
+        featuresContainer.innerHTML = '';
+        let featuresList = [];
+        if (typeof planData.features === 'string') {
+          // Parse HTML features
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = planData.features;
+          const pTags = tempDiv.querySelectorAll('p');
+          featuresList = Array.from(pTags).map(p => p.textContent.trim()).filter(f => f);
+        }
+        else if (Array.isArray(planData.features)) {
+          featuresList = planData.features;
+        }
+        // Prepend additional text for Corporate plan
+        if (cardType === 'corporate') {
+          const introLi = document.createElement('li');
+          introLi.style.fontWeight = '500';
+          introLi.style.marginBottom = '16px';
+          introLi.style.color = '#1976D2';
+          introLi.innerHTML = `All Professional plan features plus...`;
+          featuresContainer.appendChild(introLi);
+        }
+        // Prepend additional text for Enterprise plan
+        if (cardType === 'enterprise') {
+          const introLi = document.createElement('li');
+          introLi.style.fontWeight = '500';
+          introLi.style.marginBottom = '16px';
+          introLi.style.color = '#1976D2';
+          introLi.innerHTML = `All Corporate plan features plus...`;
+          featuresContainer.appendChild(introLi);
+        }
+        // Populate features
+        featuresList.forEach(feature => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="material-icons">check_circle</span>${feature}`;
+          featuresContainer.appendChild(li);
+        }
+                            );
+      }
+    }
+    const billingToggle = document.getElementById('billingToggle');
+    const monthlyLabel = document.getElementById('monthlyLabel');
+    const yearlyLabel = document.getElementById('yearlyLabel');
+    const priceAmounts = document.querySelectorAll('.price-amount');
+    const billingNotes = document.querySelectorAll('.billing-note');
+    function updatePricing() {
+      const isYearly = billingToggle ? billingToggle.checked : false;
+      // Update labels
+      monthlyLabel.classList.toggle('active', !isYearly);
+      yearlyLabel.classList.toggle('active', isYearly);
+      // Update prices
+      priceAmounts.forEach(amount => {
+        const monthly = amount.getAttribute('data-monthly');
+        const yearly = amount.getAttribute('data-yearly');
+        if (monthly && yearly) {
+          amount.textContent = isYearly ? `$${yearly}` : `$${monthly}`;
+        }
+      }
+                          );
+      // Update billing notes
+      billingNotes.forEach(note => {
+        if (!note.textContent.includes('Volume')) {
+          note.textContent = isYearly ? 'Billed annually' : 'Billed monthly';
+        }
+      }
+                          );
+    }
+    billingToggle.addEventListener('change', updatePricing);
+    // Initialize with yearly pricing
+    updatePricing();
+    // Fetch price plans on page load
+    fetchPricePlans();
+  </script>
+</body>
+<style nonce="BGk6W7hjV1P9n0b3vmZIB95NUoHND5tM">* {
+  box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+  }
+  ::-webkit-scrollbar{
+    height:6px;
+    width:6px;
+  }
+  ::-webkit-scrollbar-track{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:transparent;
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+  }
+  ::-webkit-scrollbar-thumb{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:rgb(234, 235, 240);
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:rgb(209, 213, 219);
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+  }
+  *{
+    box-sizing:border-box;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-top:0px;
+    padding-bottom:0px;
+    padding-left:0px;
+    padding-right:0px;
+    padding-top:0px;
+    scrollbar-color:rgb(234, 235, 240) transparent;
+    scrollbar-width:thin;
+  }
+  body{
+    background-color:white;
+    color:rgb(26, 26, 26);
+    font-family:Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin-bottom:0px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-top:0px;
+    min-height:100vh;
+  }
+  .pricing-header{
+    margin-bottom:60px;
+    margin-top:50px;
+    text-align:center;
+  }
+  .pricing-title{
+    color:rgb(25, 118, 210);
+    font-size:3rem;
+    font-weight:700;
+    margin-bottom:16px;
+  }
+  .pricing-subtitle{
+    color:rgb(95, 99, 104);
+    font-size:1.25rem;
+    margin-bottom:40px;
+  }
+  .billing-toggle-container{
+    align-items:center;
+    column-gap:16px;
+    display:flex;
+    justify-content:center;
+    margin-top:32px;
+    row-gap:16px;
+  }
+  .billing-label{
+    color:rgb(95, 99, 104);
+    font-size:1rem;
+    font-weight:500;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .billing-label.active{
+    background-color:white !important;
+    color:rgb(25, 118, 210) !important;
+    font-weight:600;
+  }
+  .toggle-switch{
+    cursor:pointer;
+    display:inline-block;
+    height:28px;
+    position:relative;
+    width:52px;
+  }
+  .toggle-switch input{
+    height:0px;
+    opacity:0;
+    width:0px;
+  }
+  .toggle-slider{
+    background-color:rgb(204, 204, 204);
+    border-bottom-left-radius:34px;
+    border-bottom-right-radius:34px;
+    border-top-left-radius:34px;
+    border-top-right-radius:34px;
+    bottom:0px;
+    left:0px;
+    position:absolute;
+    right:0px;
+    top:0px;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .toggle-slider::before{
+    background-color:white;
+    border-bottom-left-radius:50%;
+    border-bottom-right-radius:50%;
+    border-top-left-radius:50%;
+    border-top-right-radius:50%;
+    bottom:4px;
+    content:"";
+    height:20px;
+    left:4px;
+    position:absolute;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+    width:20px;
+  }
+  .toggle-switch input:checked + .toggle-slider{
+    background-color:rgb(25, 118, 210);
+  }
+  .toggle-switch input:checked + .toggle-slider::before{
+    transform:translateX(24px);
+  }
+  .discount-badge{
+    background-color:rgb(238, 90, 111) !important;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
+    color:white;
+    font-size:0.875rem;
+    font-weight:600;
+    padding-bottom:6px;
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:6px;
+  }
+  .pricing-container{
+    column-gap:32px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));
+    margin-bottom:0px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0px;
+    max-width:1300px;
+    row-gap:32px;
+  }
+  .pricing-card{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:white;
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    border-bottom-color:rgb(229, 231, 235);
+    border-bottom-left-radius:16px;
+    border-bottom-right-radius:16px;
+    border-bottom-style:solid;
+    border-bottom-width:2px;
+    border-image-outset:initial;
+    border-image-repeat:initial;
+    border-image-slice:initial;
+    border-image-source:initial;
+    border-image-width:initial;
+    border-left-color:rgb(229, 231, 235);
+    border-left-style:solid;
+    border-left-width:2px;
+    border-right-color:rgb(229, 231, 235);
+    border-right-style:solid;
+    border-right-width:2px;
+    border-top-color:rgb(229, 231, 235);
+    border-top-left-radius:16px;
+    border-top-right-radius:16px;
+    border-top-style:solid;
+    border-top-width:2px;
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    padding-bottom:32px;
+    padding-left:32px;
+    padding-right:32px;
+    padding-top:32px;
+    position:relative;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .pricing-card:hover{
+    border-bottom-color:rgb(25, 118, 210);
+    border-left-color:rgb(25, 118, 210);
+    border-right-color:rgb(25, 118, 210);
+    border-top-color:rgb(25, 118, 210);
+    transform:translateY(-8px);
+  }
+  .card-header{
+    border-bottom-color:rgb(224, 224, 224) !important;
+    border-bottom-style:solid !important;
+    border-bottom-width:1px !important;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    margin-bottom:24px !important;
+    min-height:110px;
+    text-align:center !important;
+  }
+  .plan-name{
+    color:rgb(25, 118, 210);
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .plan-description{
+    color:rgb(95, 99, 104);
+    font-size:1rem;
+  }
+  .pricing-section{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+    text-align:center;
+  }
+  .price-display{
+    margin-bottom:8px;
+  }
+  .price-display.secondary{
+    margin-top:16px;
+    opacity:0.8;
+  }
+  .price-display.custom{
+    margin-bottom:10px !important;
+    margin-left:0px;
+    margin-right:0px;
+  }
+  .price-amount{
+    color:rgb(26, 26, 26);
+    font-size:2.5rem;
+    font-weight:700;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .custom-pricing{
+    color:rgb(25, 118, 210);
+    font-size:1.75rem;
+    font-weight:600;
+  }
+  .price-period{
+    color:rgb(95, 99, 104);
+    display:block;
+    font-size:0.875rem;
+    margin-top:4px;
+  }
+  .billing-note{
+    color:rgb(158, 158, 158);
+    font-size:0.875rem;
+    font-style:italic;
+  }
+  .button-group{
+    column-gap:12px;
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+    row-gap:12px;
+  }
+  .btn-primary{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:initial;
+    background-image:linear-gradient(135deg, rgb(25, 118, 210) 0%, rgb(21, 101, 192) 100%);
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    border-bottom-color:initial;
+    border-bottom-left-radius:8px;
+    border-bottom-right-radius:8px;
+    border-bottom-style:none;
+    border-bottom-width:initial;
+    border-image-outset:initial;
+    border-image-repeat:initial;
+    border-image-slice:initial;
+    border-image-source:initial;
+    border-image-width:initial;
+    border-left-color:initial;
+    border-left-style:none;
+    border-left-width:initial;
+    border-right-color:initial;
+    border-right-style:none;
+    border-right-width:initial;
+    border-top-color:initial;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
+    border-top-style:none;
+    border-top-width:initial;
+    color:white;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:600;
+    padding-bottom:14px;
+    padding-left:24px;
+    padding-right:24px;
+    padding-top:14px;
+    text-align:center;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .btn-secondary{
+    background-attachment:initial;
+    background-clip:initial;
+    background-image:linear-gradient(135deg, rgb(25, 118, 210) 0%, rgb(21, 101, 192) 100%);
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    border-bottom-color:initial;
+    border-bottom-left-radius:8px;
+    border-bottom-right-radius:8px;
+    border-bottom-style:none;
+    border-bottom-width:initial;
+    border-image-outset:initial;
+    border-image-repeat:initial;
+    border-image-slice:initial;
+    border-image-source:initial;
+    border-image-width:initial;
+    border-left-color:initial;
+    border-left-style:none;
+    border-left-width:initial;
+    border-right-color:initial;
+    border-right-style:none;
+    border-right-width:initial;
+    border-top-color:initial;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
+    border-top-style:none;
+    border-top-width:initial;
+    color:white;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:600;
+    padding-bottom:14px;
+    padding-left:24px;
+    padding-right:24px;
+    padding-top:14px;
+    text-align:center;
+    text-decoration-color:initial;
+    text-decoration-line:none;
+    text-decoration-style:initial;
+    text-decoration-thickness:initial;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .btn-primary:hover{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:initial;
+    background-image:linear-gradient(135deg, rgb(21, 101, 192) 0%, rgb(13, 71, 161) 100%);
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    transform:translateY(-2px);
+  }
+  .btn-secondary:focus{
+    outline-color:initial !important;
+    outline-style:none !important;
+    outline-width:initial !important;
+  }
+  .btn-secondary:hover{
+    background-image:linear-gradient(135deg, rgb(21, 101, 192) 0%, rgb(13, 71, 161) 100%);
+    color:white !important;
+    transform:translateY(-2px);
+  }
+  .features-section{
+    flex-grow:1;
+    text-align:left;
+  }
+  .features-title{
+    color:rgb(26, 26, 26);
+    font-size:1rem;
+    font-weight:600;
+    margin-bottom:16px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-top:14px;
+  }
+  .features-list{
+    list-style-image:initial;
+    list-style-position:initial;
+    list-style-type:none;
+    margin-bottom:16px;
+  }
+  .features-list li{
+    align-items:flex-start;
+    color:rgb(66, 66, 66);
+    column-gap:12px;
+    display:flex;
+    font-size:0.938rem;
+    line-height:1.6;
+    margin-bottom:12px;
+    row-gap:12px;
+  }
+  .features-list .material-icons{
+    color:rgb(25, 118, 210);
+    flex-shrink:0;
+    font-size:20px;
+    margin-top:2px;
+  }
+  .limits-list li{
+    color:rgb(95, 99, 104);
+    font-size:0.875rem;
+    margin-bottom:8px;
+    padding-left:24px;
+    position:relative;
+  }
+  .limits-list li::before{
+    color:rgb(158, 158, 158);
+    content:"•";
+    left:8px;
+    position:absolute;
+  }
+  #page-loader{
+    align-items:center;
+    backdrop-filter:blur(10px);
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:rgba(255, 255, 255, 0.95);
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    display:flex;
+    height:100%;
+    justify-content:center;
+    left:0px;
+    position:fixed;
+    top:0px;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.5s;
+    transition-property:opacity;
+    transition-timing-function:ease;
+    width:100%;
+    z-index:99999;
+  }
+  #page-loader.fade-out{
+    opacity:0;
+  }
+  .page-loader-overlay{
+    align-items:center;
+    display:flex;
+    justify-content:center;
+  }
+  .page-loader-spinner{
+    height:50px;
+    width:50px;
+  }
+  .page-circular{
+    animation-delay:0s;
+    animation-direction:normal;
+    animation-duration:2s;
+    animation-fill-mode:none;
+    animation-iteration-count:infinite;
+    animation-name:page-rotate;
+    animation-play-state:running;
+    animation-range-end:normal;
+    animation-range-start:normal;
+    animation-timeline:auto;
+    animation-timing-function:linear;
+    height:100%;
+    transform-origin:center center;
+    width:100%;
+  }
+  .page-path{
+    animation-delay:0s;
+    animation-direction:normal;
+    animation-duration:1.5s;
+    animation-fill-mode:none;
+    animation-iteration-count:infinite;
+    animation-name:page-dash;
+    animation-play-state:running;
+    animation-range-end:normal;
+    animation-range-start:normal;
+    animation-timeline:auto;
+    animation-timing-function:ease-in-out;
+    stroke:rgb(25, 118, 210);
+    stroke-dasharray:1, 200;
+    stroke-dashoffset:0;
+    stroke-linecap:round;
+  }
+  #enterprise-card .pricing-section{
+    margin-bottom:5px !important;
+  }
+  .enterprise-badge-grid{
+    column-gap:12px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    margin-bottom:20px;
+    padding-bottom:0px;
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:0px;
+    row-gap:12px;
+  }
+  .enterprise-badge{
+    align-items:center;
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:rgb(248, 250, 255);
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    border-bottom-color:rgb(227, 242, 253);
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-image-outset:initial;
+    border-image-repeat:initial;
+    border-image-slice:initial;
+    border-image-source:initial;
+    border-image-width:initial;
+    border-left-color:rgb(227, 242, 253);
+    border-left-style:solid;
+    border-left-width:1px;
+    border-right-color:rgb(227, 242, 253);
+    border-right-style:solid;
+    border-right-width:1px;
+    border-top-color:rgb(227, 242, 253);
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    border-top-style:solid;
+    border-top-width:1px;
+    column-gap:10px;
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-start;
+    padding-bottom:12px;
+    padding-left:16px;
+    padding-right:16px;
+    padding-top:12px;
+    row-gap:10px;
+    text-align:left;
+    transition-behavior:normal;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease;
+  }
+  .enterprise-badge:hover{
+    background-attachment:initial;
+    background-clip:initial;
+    background-color:rgb(238, 247, 255);
+    background-image:initial;
+    background-origin:initial;
+    background-position-x:initial;
+    background-position-y:initial;
+    background-repeat:initial;
+    background-size:initial;
+    border-bottom-color:rgb(187, 222, 251);
+    border-left-color:rgb(187, 222, 251);
+    border-right-color:rgb(187, 222, 251);
+    border-top-color:rgb(187, 222, 251);
+    transform:translateY(-2px);
+  }
+  .enterprise-badge .material-icons{
+    color:rgb(25, 118, 210);
+    font-size:20px;
+  }
+  .enterprise-badge span:not(.material-icons){
+    color:rgb(66, 66, 66);
+    font-size:0.75rem;
+    font-weight:600;
+    line-height:1.2;
+  }
+  .pricing-footnote{
+    border-top-color:rgb(234, 235, 240);
+    border-top-style:solid;
+    border-top-width:1px;
+    color:rgb(95, 99, 104);
+    font-size:0.813rem;
+    font-style:italic;
+    margin-top:16px;
+    padding-top:8px;
+    text-align:left;
+  }
+  #start-free-trial-btn{
+    display:inline-block;
+    text-decoration:none;
+  }
+  #corporate-free-trial-btn{
+    display:inline-block;
+    text-decoration:none;
+  }
+  #enterprise-card{
+    padding-top:32px !important;
+  }
+  #idmp52{
+    display:inline-block;
+    text-decoration:none;
+  }
+  @keyframes page-rotate{
+    100%{
+      transform:rotate(360deg);
+    }
+  }
+  @keyframes page-dash{
+    0%{
+      stroke-dasharray:1, 200;
+      stroke-dashoffset:0;
+    }
+    50%{
+      stroke-dasharray:89, 200;
+      stroke-dashoffset:-35px;
+    }
+    100%{
+      stroke-dasharray:89, 200;
+      stroke-dashoffset:-124px;
+    }
+  }
+  @keyframes rotate{
+    100%{
+      transform:rotate(360deg);
+    }
+  }
+  @keyframes dash{
+    0%{
+      stroke-dasharray:1, 200;
+      stroke-dashoffset:0;
+    }
+    50%{
+      stroke-dasharray:89, 200;
+      stroke-dashoffset:-35px;
+    }
+    100%{
+      stroke-dasharray:89, 200;
+      stroke-dashoffset:-124px;
+    }
+  }
+  @media (max-width: 768px){
+    .pricing-title{
+      font-size:2rem;
+    }
+    .pricing-subtitle{
+      font-size:1rem;
+    }
+    .pricing-container{
+      grid-template-columns:1fr;
+    }
+    .billing-toggle-container{
+      flex-wrap:wrap;
+    }
+  }
+  @media (max-width: 400px){
+    .enterprise-badge-grid{
+      grid-template-columns:1fr;
+    }
+  }
+</style>
