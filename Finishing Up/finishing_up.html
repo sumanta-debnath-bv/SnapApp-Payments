@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Up Your Environment - SnapApp™</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #051d40;
+            --primary: #0066fc;
+            --success: #10b981;
+            --slate: #64748b;
+            --bg: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.85);
+            --border: rgba(0, 102, 252, 0.15);
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fbff 0%, #f2f6ff 100%);
+            background-image: radial-gradient(circle at 90% 10%, rgba(145, 109, 239, 0.08), transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(0, 102, 252, 0.06), transparent 40%);
+            min-height: 100vh;
+            color: var(--navy);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 40px auto 50px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #007bff, #8e62d3, #002b5c, #007bff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: blueOrbit 8s ease-in-out infinite;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: var(--slate);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.4px;
+        }
+
+        .status-badge .material-icons {
+            font-size: 18px;
+        }
+
+        .status-badge.in-progress .material-icons {
+            animation: spin 2s linear infinite;
+            animation-direction: reverse !important;
+        }
+
+        .status-badge.in-progress {
+            background: #e8f0fe;
+            color: #1a73e8;
+            border: 1px solid #d2e3fc;
+        }
+
+        .status-badge.completed {
+            background: #e6f4ea;
+            color: #1e8e3e;
+            border: 1px solid #ceead6;
+        }
+
+        .link-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .link-card {
+            background: var(--glass);
+            backdrop-filter: blur(14px);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            padding-bottom: 0px !important;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .link-card.ready-card {
+            border-color: var(--success);
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1);
+        }
+
+        .link-card.ready-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .card-info .url {
+            font-size: 14px;
+            color: var(--slate);
+            word-break: break-all;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #fef3c7;
+            color: var(--warning);
+            white-space: nowrap;
+        }
+
+        .status.provisioning {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status.ready {
+            background: #d1fae5;
+            color: var(--success);
+            animation: none;
+        }
+
+
+        .mui-loader {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 102, 252, 0.1);
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: mui-spin 0.8s linear infinite;
+        }
+
+        @keyframes mui-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card-description {
+            color: var(--slate);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(0, 102, 252, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            color: var(--slate);
+            font-size: 14px;
+        }
+
+        @keyframes blueOrbit {
+            0% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+
+            50% {
+                background-position: 100% 50%;
+                filter: hue-rotate(30deg);
+            }
+
+            100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+
+        .launch-btn {
+            width: fit-content;
+            min-width: 170px;
+            margin-top: 16px;
+            padding: 10px 22px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .launch-btn:hover {
+            background: #1765cc;
+            transform: translateY(-1px);
+        }
+
+        .launch-btn:active {
+            background: #1b66c9;
+            transform: translateY(0);
+        }
+
+        /* Small fix for display none */
+        .launch-btn[style*="display: none"] {
+            display: none !important;
+        }
+
+        .note-section {
+            background: #e8f0fe;
+            border: 1px solid #d2e3fc;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 0 auto 32px auto;
+            width: 100%;
+            max-width: 660px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .note-section .material-icons {
+            color: #1a73e8;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .note-text {
+            color: #1967d2;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            text-align: justify;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .link-card {
+                padding: 24px;
+            }
+
+            .card-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .note-section {
+                width: 100%;
+                padding: 12px 16px;
+                gap: 10px;
+            }
+
+            .note-text {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="status-badge in-progress" id="mainStatusBadge">
+                <span class="material-icons">sync</span>
+                SETUP IN PROGRESS
+            </span>
+            <h1>Your Environment Details</h1>
+            <p id="mainDescription">We're setting up your SnapApp environment. Stay Tuned!</p>
+            <p id="mainDescription-2">You'll also receive an email for your SnapApp environment details</p>
+        </div>
+
+        <div class="note-section">
+            <span class="material-icons">info</span>
+            <p class="note-text">
+                <strong>Important Instructions:</strong> You will need to create a <strong>separate</strong> login for
+                your
+                brand new SnapApp environment. Please note that registration and login can only be completed using your
+                email address. Make sure to use the same email when signing in to access your new environment.
+            </p>
+        </div>
+
+        <div class="link-cards">
+            <!-- Custom Domain Card -->
+            <div class="link-card" id="customDomainCard">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-info">
+                            <h3>Your SnapApp Environment</h3>
+                            <p class="url" id="customDomainUrl">Loading...</p>
+                            <p class="card-description">Your main web address to access your SnapApp Environment</p>
+                            <button class="launch-btn" id="customDomainLaunchBtn" style="display: none;">
+                                <span class="material-icons">open_in_new</span>
+                                Launch Environment
+                            </button>
+                        </div>
+                    </div>
+                    <span class="status provisioning" id="customDomainStatus">
+                        <div class="mui-loader" style="margin-right: 4px;"></div>
+                        Provisioning...
+                    </span>
+                </div>
+            </div>
+
+            <!-- Install Link Card -->
+            <div class="link-card" id="installLinkCard">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-info">
+                            <h3>Your Temporary Environment</h3>
+                            <p class="url" id="installLinkUrl">Loading...</p>
+                            <p class="card-description">An alternative link provided for direct access to your setup.
+                            </p>
+                            <button class="launch-btn" id="installLinkLaunchBtn" style="display: none;">
+                                <span class="material-icons">open_in_new</span>
+                                Launch Environment
+                            </button>
+                        </div>
+                    </div>
+                    <span class="status provisioning" id="installLinkStatus">
+                        <div class="mui-loader" style="margin-right: 4px;"></div>
+                        Provisioning...
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const subdomain = urlParams.get('subdomain');
+        const basedomain = urlParams.get('basedomain');
+        const install_id = urlParams.get('install_id');
+
+        const customDomainUrl = `https://${subdomain}.${basedomain}`;
+        const installLinkUrl = `https://${install_id}.${basedomain}`;
+        const customDomainLaunchUrl = `https://${subdomain}.${basedomain}/register`;
+        const installLinkLaunchUrl = `https://${install_id}.${basedomain}/register`;
+
+        document.getElementById('customDomainUrl').textContent = customDomainUrl;
+        document.getElementById('installLinkUrl').textContent = installLinkUrl;
+
+        const applyStyles = () => {
+            const linkCards = document.querySelectorAll('.link-card');
+            linkCards.forEach(card => {
+                card.style.boxShadow = '0 4px 12px rgba(0, 102, 252, 0.06)';
+            });
+
+            const style = document.createElement('style');
+            style.textContent = `
+        ::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.02);
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: rgba(0, 102, 252, 0.15);
+          border-radius: 10px;
+          transition: background 0.2s ease;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 102, 252, 0.25);
+        }
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(0, 102, 252, 0.15) rgba(0, 0, 0, 0.02);
+        }
+        .launch-btn .material-icons {
+          font-size: 18px;
+        }
+        .status.provisioning {
+          animation: pulse 2s ease-in-out infinite;
+        }
+      `;
+            document.head.appendChild(style);
+        };
+
+        applyStyles();
+
+        let workflowTriggered = false;
+        async function triggerTenantWorkflow() {
+            if (workflowTriggered) return;
+            workflowTriggered = true;
+
+            try {
+                const response = await csrfFetch('/preview-expression', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        expression_field: "invalid_error",
+                        field_id: "644205d9-d4d0-4fd4-8604-81a1c0d89cce",
+                        fields: {}
+                    })
+                });
+
+                const data = await response.json();
+                const tenantId = data.result || data.output;
+
+                if (tenantId) {
+                    const workflowUrl = `/trigger-workflow/e7076c91-1efe-4268-9f24-e32d877a5fb9/${tenantId}`;
+                    fetch(workflowUrl, { method: "GET" })
+                        .then(res => {
+                            if (!res.ok) throw new Error("Workflow trigger failed");
+                            console.log("Workflow triggered successfully for tenant:", tenantId);
+                        })
+                        .catch(err => {
+                            console.error("Workflow trigger failed:", err);
+                            workflowTriggered = false;
+                        });
+                } else {
+                    workflowTriggered = false;
+                }
+            } catch (error) {
+                console.error("Error triggering tenant workflow:", error);
+                workflowTriggered = false;
+            }
+        }
+
+        async function pollStatus() {
+
+            if (!subdomain || !basedomain || !install_id) {
+                return;
+            }
+
+            const checkFields = {
+                subdomain: subdomain,
+                basedomain: basedomain,
+                install_id: install_id
+            };
+
+            try {
+                const response = await csrfFetch('/preview-expression', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        expression_field: "invalid_error",
+                        field_id: "4f1db3bc-e6ea-4858-9b64-87c357dca082",
+                        fields: checkFields
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.Error || data.status === false) {
+                    return;
+                }
+
+                let resultData = data;
+                if (data.result) {
+                    resultData = typeof data.result === 'string' ? JSON.parse(data.result) : data.result;
+                } else if (data.output) {
+                    resultData = typeof data.output === 'string' ? JSON.parse(data.output) : data.output;
+                }
+
+                const installStatusData = resultData.install_id_status;
+                const subdomainStatusData = resultData.subdomain_status;
+
+                const isInstallReady = installStatusData &&
+                    installStatusData.http_status === 200 &&
+                    installStatusData.response &&
+                    installStatusData.response.is_ready === true;
+
+                const isSubdomainReady = subdomainStatusData &&
+                    subdomainStatusData.http_status === 200 &&
+                    subdomainStatusData.response &&
+                    subdomainStatusData.response.is_ready === true;
+
+
+                if (isInstallReady && isSubdomainReady) {
+                    updateUIReady();
+                    if (window.pollInterval) clearInterval(window.pollInterval);
+                } else {
+
+                    // Custom Domain Status
+                    const customStatus = document.getElementById('customDomainStatus');
+                    if (isSubdomainReady) {
+                        if (!customStatus.classList.contains('ready')) {
+                            customStatus.className = 'status ready';
+                            customStatus.innerHTML = '<span class="material-icons" style="font-size: 14px;">check_circle</span>Ready';
+                            customStatus.style.background = '';
+                            customStatus.style.color = '';
+
+                            // Show Launch Button
+                            const customBtn = document.getElementById('customDomainLaunchBtn');
+                            if (customBtn) customBtn.style.display = 'flex';
+
+                            // Make Card Clickable
+                            const customCard = document.getElementById('customDomainCard');
+                            if (customCard) {
+                                customCard.classList.add('ready-card');
+                                customCard.onclick = () => { window.location.href = customDomainLaunchUrl; };
+                            }
+
+                            // Hide Temporary Environment Card
+                            const installCard = document.getElementById('installLinkCard');
+                            if (installCard) installCard.style.display = 'none';
+
+                            triggerTenantWorkflow();
+                        }
+                    } else {
+                        // Show loader for any other status (including 302, null, etc)
+                        customStatus.className = 'status provisioning';
+                        customStatus.innerHTML = '<div class="mui-loader" style="margin-right: 4px;"></div>Provisioning...';
+                        customStatus.style.background = '#fef3c7';
+                        customStatus.style.color = 'var(--warning)';
+                    }
+
+                    // Install ID Status
+                    const installStatus = document.getElementById('installLinkStatus');
+                    if (isInstallReady) {
+                        if (!installStatus.classList.contains('ready')) {
+                            installStatus.className = 'status ready';
+                            installStatus.innerHTML = '<span class="material-icons" style="font-size: 14px;">check_circle</span>Ready';
+                            installStatus.style.background = '';
+                            installStatus.style.color = '';
+
+                            // Show Launch Button
+                            const installBtn = document.getElementById('installLinkLaunchBtn');
+                            if (installBtn) installBtn.style.display = 'flex';
+
+                            // Make Card Clickable
+                            const installCard = document.getElementById('installLinkCard');
+                            if (installCard) {
+                                installCard.classList.add('ready-card');
+                                installCard.onclick = () => { window.location.href = installLinkLaunchUrl; };
+                            }
+                        }
+                    } else {
+                        // Show loader for any other status
+                        installStatus.className = 'status provisioning';
+                        installStatus.innerHTML = '<div class="mui-loader" style="margin-right: 4px;"></div>Provisioning...';
+                        installStatus.style.background = '#fef3c7';
+                        installStatus.style.color = 'var(--warning)';
+                    }
+                }
+            } catch (error) {
+            }
+        }
+
+        function updateUIReady() {
+            const badge = document.getElementById('mainStatusBadge');
+            if (badge) {
+                badge.innerHTML = '<span class="material-icons">check_circle</span> SETUP COMPLETED';
+                badge.classList.remove('in-progress');
+                badge.classList.add('completed');
+                badge.style.background = '';
+                badge.style.color = '';
+            }
+
+            const mainDesc = document.getElementById('mainDescription');
+            if (mainDesc) mainDesc.textContent = 'Your SnapApp environment is now ready!';
+
+            const customStatus = document.getElementById('customDomainStatus');
+            if (customStatus) {
+                customStatus.className = 'status ready';
+                customStatus.innerHTML = '<span class="material-icons" style="font-size: 14px;">check_circle</span>Ready';
+                customStatus.style.background = '';
+                customStatus.style.color = '';
+
+                // Hide Temporary Environment Card
+                const installCard = document.getElementById('installLinkCard');
+                if (installCard) installCard.style.display = 'none';
+            }
+
+            const installStatus = document.getElementById('installLinkStatus');
+            if (installStatus) {
+                installStatus.className = 'status ready';
+                installStatus.innerHTML = '<span class="material-icons" style="font-size: 14px;">check_circle</span>Ready';
+                installStatus.style.background = '';
+                installStatus.style.color = '';
+            }
+
+            const customBtn = document.getElementById('customDomainLaunchBtn');
+            if (customBtn) customBtn.style.display = 'flex';
+
+            const installBtn = document.getElementById('installLinkLaunchBtn');
+            if (installBtn) installBtn.style.display = 'flex';
+
+            const customCard = document.getElementById('customDomainCard');
+            if (customCard) {
+                customCard.classList.add('ready-card');
+                customCard.onclick = () => { window.location.href = customDomainLaunchUrl; };
+            }
+
+            const installCard = document.getElementById('installLinkCard');
+            if (installCard) {
+                installCard.classList.add('ready-card');
+                installCard.onclick = () => { window.location.href = installLinkLaunchUrl; };
+            }
+
+            triggerTenantWorkflow();
+        }
+
+        window.pollInterval = setInterval(pollStatus, 5000);
+        pollStatus();
+
+
+        document.getElementById('customDomainLaunchBtn').onclick = () => { window.location.href = customDomainLaunchUrl; };
+        document.getElementById('installLinkLaunchBtn').onclick = () => { window.location.href = installLinkLaunchUrl; };
+    </script>
+</body>
+</html>
