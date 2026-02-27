@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Summary | SnapApp™</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1976D2;
+      --secondary-color: #1565C0; 
+      --text-color: #1A1A1A;
+      --light-text: #5F6368;
+      --border-color: #EAEBF0;
+      --bg-color: #F8F9FA;
+    }
+
+    /* Thin Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgb(234, 235, 240);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D1D5DB;
+    }
+
+    /* For Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgb(234, 235, 240) transparent;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: white;
+      color: var(--text-color);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Page Loader */
+    #page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    .page-loader-spinner {
+      width: 50px;
+      height: 50px;
+    }
+    .page-circular {
+      animation: rotate 2s linear infinite;
+      height: 100%;
+      width: 100%;
+    }
+    .page-path {
+      stroke: var(--primary-color);
+      stroke-linecap: round;
+      animation: dash 1.5s ease-in-out infinite;
+    }
+    @keyframes rotate { 100% { transform: rotate(360deg); } }
+    @keyframes dash {
+      0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+      50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35; }
+      100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124; }
+    }
+    .fade-out { opacity: 0; pointer-events: none; }
+
+    /* Header */
+    .header {
+      padding: 40px 20px;
+      padding-top: 30px !important;
+      padding-bottom: 0px !important;
+      text-align: center;
+      background: white;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    .header p {
+      font-size: 1.1rem;
+      color: var(--light-text);
+    }
+
+    /* Main Content Container */
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      padding-top: 30px !important;
+      padding-bottom: 0px !important;
+      background-color: white !important;
+    }
+
+    /* New Billing Toggle Pill Style */
+    .billing-toggle-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    .billing-toggle-pill {
+      display: flex;
+      background: white;
+      border: 1px solid #E0E0E0;
+      border-radius: 12px;
+      padding: 6px;
+      gap: 4px;
+      align-items: center;
+    }
+    .billing-option {
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #616161;
+      user-select: none;
+    }
+    .billing-option.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    .save-badge {
+      background: #E3F2FD;
+      color: var(--primary-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+    #yearlyOption {
+      padding-right: 16px;
+    }
+
+    /* Order Summary Card (Adapted from Modal) */
+    .summary-card {
+      background: white;
+      border-radius: 20px;
+      max-width: 1000px;
+      width: 100%;
+      border: 2px solid rgb(229, 231, 235);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .split-layout {
+      display: flex;
+    }
+
+    .left-panel {
+      flex: 1.2;
+      background: white;
+      padding: 48px 48px 30px 48px;
+      padding-top: 30px !important;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .right-panel {
+      flex: 1;
+      background: white;
+      padding: 48px 48px 30px 48px;
+      padding-top: 30px !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 12px;
+    }
+
+    .panel-subtitle {
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      opacity: 0.8;
+      margin-bottom: 32px;
+    }
+
+
+    .right-panel-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .summary-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .summary-plan-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-plan-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .summary-billing-cycle {
+      font-size: 0.9rem;
+      color: var(--light-text);
+      margin-top: 4px;
+    }
+
+    .summary-price {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background: #EEEEEE;
+      margin: 8px 0;
+    }
+
+
+    .promo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .promo-input-group {
+      display: flex;
+      border: 1px solid #DADCE0;
+      border-radius: 8px;
+      padding: 4px 4px 4px 12px;
+    }
+
+    .promo-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 0;
+      font-size: 0.95rem;
+    }
+
+    .promo-btn {
+      background: #F1F3F4;
+      border: none;
+      color: #3C4043;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .promo-btn:focus { outline: none !important; }
+
+    .promo-btn:hover { background: #E8EAED; }
+    .promo-btn.remove-btn { background: #FCE8E6; color: #D32F2F; }
+
+    .promo-message {
+      font-size: 0.85rem;
+      display: none;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    .promo-message.success { display: flex; color: #2E7D32; }
+    .promo-message.error { display: flex; color: #D32F2F; }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-label { font-size: 1.1rem; font-weight: 700; }
+    .total-amount { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); }
+
+    .btn-checkout {
+      background-color: #1976D2 !important;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 18px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-checkout:hover { background: var(--secondary-color); }
+    .btn-checkout:disabled { background: #CCC; cursor: not-allowed; }
+
+
+    @media (max-width: 900px) {
+      .split-layout { flex-direction: column; }
+      .left-panel { border-right: none; border-bottom: 1px solid var(--border-color); }
+    }
+  </style>
+</head>
+<body>
+  <input type="hidden" id="tenant-id-input" value="[[id]]">
+  
+  <div id="page-loader">
+    <div class="page-loader-spinner">
+      <svg class="page-circular" viewBox="25 25 50 50">
+        <circle class="page-path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="header">
+    <h1>Upgrade Your Plan</h1>
+    <p>Flexible plans tailored to your needs</p>
+  </div>
+
+  <div class="main-container">
+    <div style="width: 100%; max-width: 1000px;">
+      
+      <div class="billing-toggle-wrapper">
+        <div class="billing-toggle-pill">
+          <div id="monthlyOption" class="billing-option active">Pay Monthly</div>
+          <div id="yearlyOption" class="billing-option">
+            Pay Yearly <span class="save-badge" id="annual-save-badge">Save 20%</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hidden checkbox to maintain logic compatibility -->
+      <input type="checkbox" id="billingToggle" style="display: none;">
+
+      <div class="summary-card">
+        <div class="split-layout">
+          <!-- Left Panel -->
+          <div class="left-panel">
+            <h2 class="panel-title">Upgrade to <span id="modal-plan-name-display">Professional</span></h2>
+            <p class="panel-subtitle">Unlock full potential of SnapApp</p>
+            
+            <ul class="features-list" id="modal-features-list">
+              <!-- Features populated dynamically -->
+            </ul>
+          </div>
+
+          <!-- Right Panel -->
+          <div class="right-panel">
+             <h3 class="right-panel-title">Order Summary</h3>
+             
+             <div class="summary-content">
+                <div class="summary-row">
+                  <div class="summary-plan-info">
+                    <span class="summary-plan-name">Professional</span>
+                    <span class="summary-billing-cycle" id="summary-billing-cycle">Billed annually</span>
+                  </div>
+                  <div class="summary-price" id="summary-plan-price">$0 / user / month</div>
+                </div>
+                
+                <div class="summary-divider"></div>
+
+                <div class="summary-row">
+                  <div class="counter-wrapper">
+                    <div class="counter-container">
+                      <button class="counter-btn" id="decrement-btn" title="Decrease users">
+                        <span class="material-icons">remove</span>
+                      </button>
+                      <span class="counter-value" id="summary-user-count-value">5</span>
+                      <button class="counter-btn" id="increment-btn" title="Increase users">
+                        <span class="material-icons">add</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="summary-price" id="summary-user-math">5 x $0.00</div>
+                </div>
+
+                <div class="promo-container">
+                  <div class="promo-input-group">
+                    <input type="text" class="promo-input" placeholder="Enter promo code" id="promo-input" />
+                    <button class="promo-btn" id="promo-apply-btn">Apply</button>
+                  </div>
+                  <div id="promo-message" class="promo-message"></div>
+                </div>
+
+                <div class="summary-divider"></div>
+                
+                <div class="total-row">
+                  <span class="total-label" id="total-label">Subtotal</span>
+                  <span class="total-amount" id="summary-final-total">$0.00</span>
+                </div>
+                
+                <div class="actions-container">
+                  <button class="btn-checkout" id="checkout-btn">Proceed to Checkout</button>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Inject Feature List Styles
+    const featureStyles = document.createElement('style');
+    featureStyles.textContent = `
+      .features-list {
+        list-style: none;
+      }
+      .feature-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        border-bottom: 1px solid #EEEEEE;
+      }
+      .feature-text {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #1976D2;
+      }
+      .feature-check {
+        color: #1976D2;
+        font-size: 20px;
+      }
+
+      /* Counter Styles */
+      .counter-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .counter-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .counter-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid #1976D2; /* Use hardcoded or CSS var */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: white;
+        color: #1976D2;
+        transition: all 0.2s;
+        padding: 0;
+        outline: none;
+      }
+      .counter-btn .material-icons {
+        font-size: 20px;
+        color: inherit; /* Crucial for hover color change */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .counter-btn:hover:not(:disabled) {
+        background: #1976D2;
+        color: white !important;
+      }
+      .counter-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        border-color: #1976D2 !important;
+        color: #1976D2 !important;
+      }
+      .counter-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        min-width: 30px;
+        text-align: center;
+        color: #1A1A1A;
+      }
+
+      /* Promo Loader Styles */
+      .btn-loader {
+        width: 18px;
+        height: 18px;
+        border: 2.5px solid rgba(25, 118, 210, 0.2);
+        border-top: 2.5px solid #1976D2;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: block;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(featureStyles);
+
+    // Global state
+    window.currentUserCount = 5;
+    window.professionalPlanData = null;
+    window.professionalPlanId = "";
+    window.currentTenantId = "";
+    window.appliedPromo = null;
+
+    // Page Loader
+    window.addEventListener('load', function() {
+      const pageLoader = document.getElementById('page-loader');
+      if (pageLoader) {
+        pageLoader.classList.add('fade-out');
+        setTimeout(() => { pageLoader.style.display = 'none'; }, 500);
+      }
+    });
+
+    // Fetch Plan Data
+    async function fetchPricePlans() {
+      try {
+        const response = await csrfFetch('/preview-expression', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            expression_field: "invalid_error",
+            field_id: "bd2462e8-0d80-482c-9726-3ab51c26cca9",
+            fields: {}
+          })
+        });
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        
+        if (data && data.result) {
+          const parsedResult = JSON.parse(data.result);
+          const plans = parsedResult.plans || parsedResult.data || (Array.isArray(parsedResult) ? parsedResult : []);
+          
+          const tenant = parsedResult.tenant || {};
+          window.currentTenantId = tenant.id || tenant.record_id || parsedResult.tenant_id || "";
+          
+          const professionalPlan = plans.find(plan => 
+            plan.name === 'Professional' || plan.plan_name === 'Professional'
+          );
+
+          if (professionalPlan) {
+            window.professionalPlanData = professionalPlan;
+            window.professionalPlanId = professionalPlan.id || professionalPlan.record_id || "";
+            updateUI(professionalPlan);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching price plans:', error);
+      }
+    }
+
+    function updateUI(planData) {
+      // Update Save Badge
+      if (planData.annual_discount) {
+        const discountPercent = Math.round(planData.annual_discount * 100);
+        const saveBadge = document.getElementById('annual-save-badge');
+        if (saveBadge) saveBadge.textContent = `Save ${discountPercent}%`;
+      }
+
+      // Update Features
+      const featuresList = document.getElementById('modal-features-list');
+      if (featuresList && planData.features) {
+        featuresList.innerHTML = '';
+        let features = [];
+        if (typeof planData.features === 'string') {
+          const temp = document.createElement('div');
+          temp.innerHTML = planData.features;
+          features = Array.from(temp.querySelectorAll('p, li')).map(el => el.textContent.trim());
+        } else if (Array.isArray(planData.features)) {
+          features = planData.features;
+        }
+
+        features.slice(0, 5).forEach(feature => {
+          const li = document.createElement('li');
+          li.className = 'feature-item';
+          li.innerHTML = `
+            <span class="feature-text">${feature}</span>
+            <span class="material-icons feature-check">check</span>
+          `;
+          featuresList.appendChild(li);
+        });
+
+        if (features.length > 5) {
+          const li = document.createElement('li');
+          li.className = 'feature-item';
+          li.innerHTML = `<span class="feature-text">And more...</span>`;
+          featuresList.appendChild(li);
+        }
+      }
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const planData = window.professionalPlanData;
+      if (!planData) return;
+
+      const isYearly = document.getElementById('billingToggle').checked;
+      const userCount = window.currentUserCount;
+      
+      const backendPrice = parseFloat(planData.price || 0);
+      const annualDiscount = parseFloat(planData.annual_discount || 0);
+      const term = planData.term || 'Month';
+      
+      let monthlyPrice, yearlyPricePerMonth;
+      if (term === 'Month') {
+        monthlyPrice = backendPrice;
+        yearlyPricePerMonth = annualDiscount > 0 ? (monthlyPrice * (1 - annualDiscount)) : monthlyPrice;
+      } else {
+        yearlyPricePerMonth = backendPrice / 12;
+        monthlyPrice = annualDiscount > 0 ? (yearlyPricePerMonth / (1 - annualDiscount)) : yearlyPricePerMonth;
+      }
+      
+      let chargeAmount = 0;
+      const summaryPlanPrice = document.getElementById('summary-plan-price');
+      const summaryBillingCycle = document.getElementById('summary-billing-cycle');
+      const summaryUserValue = document.getElementById('summary-user-count-value');
+      const summaryUserMath = document.getElementById('summary-user-math');
+      const summaryFinalTotal = document.getElementById('summary-final-total');
+
+      if (isYearly) {
+        summaryBillingCycle.textContent = 'Billed annually';
+        chargeAmount = yearlyPricePerMonth * 12 * userCount;
+        summaryPlanPrice.textContent = `$${yearlyPricePerMonth.toFixed(2)} / User / Month`;
+        summaryUserMath.textContent = `${userCount} x $${(yearlyPricePerMonth * 12).toFixed(2)}`;
+      } else {
+        summaryBillingCycle.textContent = 'Billed monthly';
+        chargeAmount = monthlyPrice * userCount;
+        summaryPlanPrice.textContent = `$${monthlyPrice.toFixed(2)} / User / Month`;
+        summaryUserMath.textContent = `${userCount} x $${monthlyPrice.toFixed(2)}`;
+      }
+      
+      summaryUserValue.textContent = userCount;
+
+      let discount = 0;
+      if (window.appliedPromo) {
+        if (window.appliedPromo.discount_amount) {
+          discount = parseFloat(window.appliedPromo.discount_amount);
+        } else if (window.appliedPromo.discount_percent) {
+          discount = chargeAmount * parseFloat(window.appliedPromo.discount_percent);
+        }
+      }
+
+      const finalTotal = Math.max(0, chargeAmount - discount);
+      summaryFinalTotal.textContent = `$${finalTotal.toFixed(2)}`;
+      document.getElementById('total-label').textContent = window.appliedPromo ? 'Total' : 'Subtotal';
+
+      // Toggle styles for options
+      document.getElementById('monthlyOption').classList.toggle('active', !isYearly);
+      document.getElementById('yearlyOption').classList.toggle('active', isYearly);
+
+      // Disable decrement if at 5
+      document.getElementById('decrement-btn').disabled = userCount <= 5;
+    }
+
+    async function applyPromoCode() {
+      const promoInput = document.getElementById('promo-input');
+      const promoBtn = document.getElementById('promo-apply-btn');
+      const promoMessage = document.getElementById('promo-message');
+      const code = promoInput.value.trim();
+
+      if (!code) return;
+
+      if (promoBtn.textContent === 'Remove') {
+        removePromoCode();
+        return;
+      }
+
+      promoBtn.disabled = true;
+      const originalText = promoBtn.textContent;
+      promoBtn.innerHTML = '<div class="btn-loader"></div>';
+      promoBtn.style.display = 'flex';
+      promoBtn.style.alignItems = 'center';
+      promoBtn.style.justifyContent = 'center';
+
+      try {
+        const response = await csrfFetch('/preview-expression', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            expression_field: "invalid_error",
+            field_id: "19689875-4ebf-48d0-9ce3-6bcc3a93fea0",
+            fields: {}
+          })
+        });
+
+        const data = await response.json();
+        let promos = [];
+        if (data && data.result) promos = JSON.parse(data.result);
+
+        const foundPromo = promos.find(p => p.name === code && p.active === 1);
+
+        if (foundPromo) {
+          window.appliedPromo = foundPromo;
+          promoBtn.textContent = 'Remove';
+          promoBtn.classList.add('remove-btn');
+          promoMessage.innerHTML = `<span class="material-icons" style="font-size: 16px;">check_circle</span> ${foundPromo.promo_text}`;
+          promoMessage.className = 'promo-message success';
+          promoMessage.style.display = 'flex';
+          promoInput.readOnly = true;
+          updateSummary();
+        } else {
+          promoMessage.innerHTML = `<span class="material-icons" style="font-size: 16px;">highlight_off</span> Invalid Promo Code!`;
+          promoMessage.className = 'promo-message error';
+          promoMessage.style.display = 'flex';
+          promoBtn.textContent = 'Apply';
+        }
+      } catch (error) {
+        console.error('Error applying promo:', error);
+        promoBtn.textContent = 'Apply';
+      } finally {
+        promoBtn.disabled = false;
+        promoBtn.style.display = '';
+      }
+    }
+
+    function removePromoCode() {
+      window.appliedPromo = null;
+      const promoInput = document.getElementById('promo-input');
+      const promoBtn = document.getElementById('promo-apply-btn');
+      const promoMessage = document.getElementById('promo-message');
+
+      promoInput.value = '';
+      promoInput.readOnly = false;
+      promoBtn.textContent = 'Apply';
+      promoBtn.classList.remove('remove-btn');
+      promoMessage.style.display = 'none';
+      updateSummary();
+    }
+
+    async function handleCheckout() {
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const originalText = checkoutBtn.textContent;
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = 'Processing...';
+
+      const isYearly = document.getElementById('billingToggle').checked;
+      const tenantId = document.getElementById('tenant-id-input').value;
+      
+      const checkoutFields = {
+        price_plan_id: window.professionalPlanId,
+        tenant_id: tenantId,
+        billing_interval: isYearly ? 'year' : 'month',
+        quantity: window.currentUserCount,
+        promo_code: window.appliedPromo ? window.appliedPromo.name : ""
+      };
+
+      try {
+        const response = await csrfFetch('/preview-expression', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            expression_field: "invalid_error",
+            field_id: "20cbd19f-a1f4-4b3d-aec4-161ffa0d552d",
+            fields: checkoutFields
+          })
+        });
+
+        const data = await response.json();
+        if (data && data.result) {
+          let url = data.result;
+          if (typeof url === 'string' && url.startsWith('"') && url.endsWith('"')) url = url.slice(1, -1);
+          if (url && (url.startsWith('http') || url.startsWith('/'))) {
+            window.location.href = url;
+          } else {
+            alert('Checkout failed. Please try again.');
+          }
+        }
+      } catch (error) {
+        console.error('Checkout error:', error);
+        alert('An error occurred. Please try again.');
+      } finally {
+        checkoutBtn.disabled = false;
+        checkoutBtn.textContent = originalText;
+      }
+    }
+
+    // Event Listeners
+    document.getElementById('monthlyOption').addEventListener('click', () => {
+      document.getElementById('billingToggle').checked = false;
+      updateSummary();
+    });
+    document.getElementById('yearlyOption').addEventListener('click', () => {
+      document.getElementById('billingToggle').checked = true;
+      updateSummary();
+    });
+    document.getElementById('decrement-btn').addEventListener('click', () => { if(window.currentUserCount > 5) { window.currentUserCount--; updateSummary(); } });
+    document.getElementById('increment-btn').addEventListener('click', () => { window.currentUserCount++; updateSummary(); });
+    document.getElementById('promo-apply-btn').addEventListener('click', applyPromoCode);
+    document.getElementById('promo-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') applyPromoCode(); });
+    document.getElementById('checkout-btn').addEventListener('click', handleCheckout);
+
+    // Initial Load
+    fetchPricePlans();
+  </script>
+</body>
+</html>
